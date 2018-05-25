@@ -111,7 +111,7 @@ CREATE TABLE `reserva` (
   KEY `fk_Reserva_Horario1_idx` (`Horario_id`),
   CONSTRAINT `fk_Reserva_Horario1` FOREIGN KEY (`Horario_id`) REFERENCES `vuelo` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Reserva_Usuario1` FOREIGN KEY (`Usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,6 +120,7 @@ CREATE TABLE `reserva` (
 
 LOCK TABLES `reserva` WRITE;
 /*!40000 ALTER TABLE `reserva` DISABLE KEYS */;
+INSERT INTO `reserva` VALUES (1,233,3,11),(2,233,3,11),(3,233,3,11),(4,233,3,12),(5,233,3,12),(6,233,3,12),(7,233,3,12),(8,233,3,12),(9,233,3,12),(10,233,3,12),(11,233,3,12),(12,233,3,12),(13,233,3,12),(14,233,3,12),(15,233,3,12),(16,233,3,12),(17,233,3,12);
 /*!40000 ALTER TABLE `reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,6 +185,35 @@ INSERT INTO `rutaavion` VALUES (1,1),(1,4),(2,2),(2,5),(3,3),(3,6),(4,7),(5,8),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tarjeta`
+--
+
+DROP TABLE IF EXISTS `tarjeta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tarjeta` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
+  `expiracion` date DEFAULT NULL,
+  `seguridad` varchar(45) DEFAULT NULL,
+  `Reserva_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`Reserva_id`),
+  KEY `fk_Tiquete_Reserva1_idx` (`Reserva_id`),
+  CONSTRAINT `fk_tarjeta_1` FOREIGN KEY (`Reserva_id`) REFERENCES `reserva` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tarjeta`
+--
+
+LOCK TABLES `tarjeta` WRITE;
+/*!40000 ALTER TABLE `tarjeta` DISABLE KEYS */;
+INSERT INTO `tarjeta` VALUES (123,'cds','2018-02-02','1234',1),(123,'cds','2018-02-02','1234',2),(1342,'ffevv','1940-10-20','243',3),(1342,'ffevv','1940-10-20','243',4),(5443,'prueba','2010-03-03','123',5),(5443,'prueba','2010-03-03','123',6),(5443,'prueba','2010-03-03','123',7),(5443,'prueba','2010-03-03','123',8),(5443,'prueba','2010-03-03','123',9),(5443,'prueba','2010-03-03','123',10),(5443,'prueba','2010-03-03','123',11),(5443,'prueba','2010-03-03','123',12),(5443,'prueba','2010-03-03','123',13),(5443,'prueba','2010-03-03','123',14),(5443,'prueba','2010-03-03','123',15),(5443,'prueba','2010-03-03','123',16),(5443,'prueba','2010-03-03','123',17);
+/*!40000 ALTER TABLE `tarjeta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tipoavion`
 --
 
@@ -210,33 +240,6 @@ LOCK TABLES `tipoavion` WRITE;
 /*!40000 ALTER TABLE `tipoavion` DISABLE KEYS */;
 INSERT INTO `tipoavion` VALUES (1,1995,'TAKA','JACKSON','200','5',40),(2,2000,'SUKY','MALTA','350','4',90),(3,1980,'OLD','NAVY','100','2',50);
 /*!40000 ALTER TABLE `tipoavion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tiquete`
---
-
-DROP TABLE IF EXISTS `tiquete`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tiquete` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `persona` varchar(45) DEFAULT NULL,
-  `asiento` varchar(45) DEFAULT NULL,
-  `Reserva_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`Reserva_id`),
-  KEY `fk_Tiquete_Reserva1_idx` (`Reserva_id`),
-  CONSTRAINT `fk_Tiquete_Reserva1` FOREIGN KEY (`Reserva_id`) REFERENCES `reserva` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tiquete`
---
-
-LOCK TABLES `tiquete` WRITE;
-/*!40000 ALTER TABLE `tiquete` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tiquete` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -298,7 +301,7 @@ CREATE TABLE `vuelo` (
 
 LOCK TABLES `vuelo` WRITE;
 /*!40000 ALTER TABLE `vuelo` DISABLE KEYS */;
-INSERT INTO `vuelo` VALUES (11,'2018-06-10','10:40:00',200,1,0,100),(12,'2018-06-11','09:30:00',200,2,0,100),(13,'2018-06-12','14:00:00',350,3,1,100),(14,'2018-06-13','11:00:00',350,4,1,100),(15,'2018-06-14','08:00:00',400,5,0,100),(16,'2018-06-15','10:00:00',400,6,0,100),(17,'2018-06-16','15:00:00',320,7,1,100),(18,'2018-06-17','09:00:00',320,8,1,100),(19,'2018-06-18','18:00:00',200,9,0,100),(20,'2018-06-19','07:00:00',200,10,0,100);
+INSERT INTO `vuelo` VALUES (11,'2018-06-10','10:40:00',200,1,0,94),(12,'2018-06-11','09:30:00',200,2,0,58),(13,'2018-06-12','14:00:00',350,3,1,100),(14,'2018-06-13','11:00:00',350,4,1,100),(15,'2018-06-14','08:00:00',400,5,0,100),(16,'2018-06-15','10:00:00',400,6,0,100),(17,'2018-06-16','15:00:00',320,7,1,100),(18,'2018-06-17','09:00:00',320,8,1,100),(19,'2018-06-18','18:00:00',200,9,0,100),(20,'2018-06-19','07:00:00',200,10,0,100);
 /*!40000 ALTER TABLE `vuelo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -386,6 +389,53 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `realizarPagoIda` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `realizarPagoIda`(in idUsuario int,in idVuelo int,in asientos int, in numTarjeta int,in nombTarjeta varchar(45),in expiracion date,in seguridad int)
+BEGIN
+	insert into reserva(Usuario_id,cantidad,Horario_id) values(idUsuario,asientos,idVuelo);
+    set @rid=LAST_INSERT_ID();
+    update vuelo set disponibles=(disponibles-asientos) where id=idVuelo;
+    insert into tarjeta values(numTarjeta,nombTarjeta,expiracion,seguridad,@rid);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `realizarPagoIdaVuelta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `realizarPagoIdaVuelta`(in idUsuario int,in idIda int,in idVuelta int,in asientos int, in numTarjeta int,in nombTarjeta varchar(45),in expiracion date,in seguridad int)
+BEGIN
+	insert into reserva(Usuario_id,cantidad,Horario_id) values(idUsuario,asientos,idIda);
+    update vuelo set disponibles=(disponibles-asientos) where id=idIda;
+    insert into tarjeta values(numTarjeta,nombTarjeta,expiracion,seguridad,LAST_INSERT_ID());
+    
+    insert into reserva(Usuario_id,cantidad,Horario_id) values(idUsuario,asientos,idVuelta);
+    update vuelo set disponibles=(disponibles-asientos) where id=idVuelta;
+    insert into tarjeta values(numTarjeta,nombTarjeta,expiracion,seguridad,LAST_INSERT_ID());
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `registrarUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -418,4 +468,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-25 15:05:45
+-- Dump completed on 2018-05-25 17:58:18

@@ -27,6 +27,8 @@ public class ServicioAereopuerto extends Servicio{
      private static final String iniciarSesion = "{call iniciarSesion(?,?)}";
      private static final String buscarVueloIda = "{call buscarVueloIda(?,?,?,?)}";
      private static final String buscarVueloIdaVuelta = "{call buscarVueloIdaVuelta(?,?,?,?,?)}";
+     private static final String realizarPagoIda = "{call realizarPagoIda(?,?,?,?,?,?,?)}";
+     private static final String realizarPagoIdaVuelta = "{call realizarPagoIdaVuelta(?,?,?,?,?,?,?,?)}";
      public static JSONArray convertToJSON(ResultSet resultSet)
             throws Exception {
         JSONArray jsonArray = new JSONArray();
@@ -91,8 +93,9 @@ public class ServicioAereopuerto extends Servicio{
                 desconectar();
             } catch (SQLException e) {
             }
+             return js;
         }
-        return js;
+       
  }
   public JSONArray iniciarSesion(String mail,String contra) throws SQLException, ClassNotFoundException, Exception{
         JSONArray js=new JSONArray();
@@ -120,8 +123,9 @@ public class ServicioAereopuerto extends Servicio{
                 desconectar();
             } catch (SQLException e) {
             }
+            return js;
         }
-        return js;
+        
  }
   public JSONArray buscarVueloIda(String dia,String salida,String destino,int cant) throws SQLException, ClassNotFoundException, Exception{
         JSONArray js=new JSONArray();
@@ -151,8 +155,9 @@ public class ServicioAereopuerto extends Servicio{
                 desconectar();
             } catch (SQLException e) {
             }
+            return js;
         }
-        return js;
+        
  }
   public JSONArray buscarVueloIdaVuelta(String ida,String vuelta,String salida,String destino,int cant) throws SQLException, ClassNotFoundException, Exception{
         JSONArray js=new JSONArray();
@@ -183,7 +188,77 @@ public class ServicioAereopuerto extends Servicio{
                 desconectar();
             } catch (SQLException e) {
             }
+            return js;
         }
-        return js;
+        
+ }
+  public JSONArray realizarPagoIda(int idUsuario,int idVuelo,int asientos,int numTarjeta,String nombTarjeta,String expiracion,int seguridad) throws SQLException, ClassNotFoundException, Exception{
+        JSONArray js=new JSONArray();
+        conectar();
+        ResultSet rs = null;
+        CallableStatement pstmt=null;  
+        try {            
+            pstmt = conexion.prepareCall(realizarPagoIda); 
+            pstmt.setInt(1,idUsuario);
+            pstmt.setInt(2,idVuelo);
+            pstmt.setInt(3,asientos);
+            pstmt.setInt(4,numTarjeta);
+            pstmt.setString(5,nombTarjeta);
+            pstmt.setString(6,expiracion);
+            pstmt.setInt(7,seguridad);
+            pstmt.execute();
+            rs = (ResultSet)pstmt.getResultSet(); 
+            js=convertToJSON(rs);
+        } catch (SQLException e) {
+            String er;
+            er=e.getMessage();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+            }
+            return js;
+        }
+ }
+  public JSONArray realizarPagoIdaVuelta(int idUsuario,int idIda,int idVuelta,int asientos,int numTarjeta,String nombTarjeta,String expiracion,int seguridad) throws SQLException, ClassNotFoundException, Exception{
+        JSONArray js=new JSONArray();
+        conectar();
+        ResultSet rs = null;
+        CallableStatement pstmt=null;  
+        try {            
+            pstmt = conexion.prepareCall(realizarPagoIdaVuelta); 
+            pstmt.setInt(1,idUsuario);
+            pstmt.setInt(2,idIda);
+            pstmt.setInt(3,idVuelta);
+            pstmt.setInt(4,asientos);
+            pstmt.setInt(5,numTarjeta);
+            pstmt.setString(6,nombTarjeta);
+            pstmt.setString(7,expiracion);
+            pstmt.setInt(8,seguridad);
+            pstmt.execute();
+            rs = (ResultSet)pstmt.getResultSet(); 
+            js=convertToJSON(rs);
+        } catch (SQLException e) {
+            String er;
+            er=e.getMessage();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+            }
+            return js;
+        }
  }
 }

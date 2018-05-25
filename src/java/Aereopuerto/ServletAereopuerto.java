@@ -71,6 +71,27 @@ public class ServletAereopuerto extends HttpServlet {
                     int can = Integer.parseInt(request.getParameter("cant"));
                     out.print(servicio.buscarVueloIdaVuelta(ida,vuelta,salid,destin,can));
                     break;
+                case "realizarPagoIda": case "realizarPagoIdaVuelta":
+                    int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                    
+                    int idIda=0,idVuelta=0,idVuelo=0;
+                    if(accion.equals("realizarPagoIda"))
+                        idVuelo = Integer.parseInt(request.getParameter("idVuelo"));//realizarPagoIda
+                    else if(accion.equals("realizarPagoIdaVuelta"))
+                    {
+                        idIda = Integer.parseInt(request.getParameter("idIda"));//realizarPagoIdaVuelta
+                        idVuelta = Integer.parseInt(request.getParameter("idVuelta"));//realizarPagoIdaVuelta
+                    }
+                    int asientos = Integer.parseInt(request.getParameter("asientos"));
+                    int numTarjeta = Integer.parseInt(request.getParameter("numTarjeta"));
+                    String nombTarjeta= request.getParameter("nombTarjeta");
+                    String expiracion= request.getParameter("expiracion");//fecha
+                    int seguridad = Integer.parseInt(request.getParameter("seguridad"));
+                    if(accion.equals("realizarPagoIda"))
+                        out.print(servicio.realizarPagoIda(idUsuario,idVuelo,asientos,numTarjeta,nombTarjeta,expiracion,seguridad));
+                    else if(accion.equals("realizarPagoIdaVuelta"))
+                        out.print(servicio.realizarPagoIdaVuelta(idUsuario,idIda,idVuelta,asientos,numTarjeta,nombTarjeta,expiracion,seguridad));
+                    break;
                 default:
                     out.print("Error: No se indico la acción que se desea realizar");
                     break;

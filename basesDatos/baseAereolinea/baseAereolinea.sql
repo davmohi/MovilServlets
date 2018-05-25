@@ -332,6 +332,41 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `buscarVueloIdaVuelta` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarVueloIdaVuelta`(in ida date,in vuelta date,in salida varchar(45),in destino varchar(45),in cant int)
+BEGIN
+select v1.id as idIda,v2.id as idVuelta,r.titulo,r.descripcion,
+	   v1.dia as fechaIda,v1.salida as salidaIda,t1.llegada as llegadaIda, v1.disponibles as disponiblesIda,
+	   v2.dia as fechaVuelta,v2.salida as salidaVuelta,t2.llegada as llegadaVuelta, v2.disponibles as disponiblesVuelta,
+       (v1.precio+v2.precio) as costo,v1.oferta
+  from vuelo as v1,vuelo v2,ruta as r, ciudad as c1,ciudad as c2,
+  (
+	select v.id, SEC_TO_TIME(sum(time_to_sec(v.salida)+time_to_sec(r.duracion)))as llegada from vuelo v,ruta r where v.Ruta_id=r.id
+    group by v.id
+  )t1,
+  (
+	select v.id, SEC_TO_TIME(sum(time_to_sec(v.salida)+time_to_sec(r.duracion)))as llegada from vuelo v,ruta r where v.Ruta_id=r.id
+    group by v.id
+  )t2
+  where c1.id=r.salida_id and c2.id=r.destino_id and r.id=v1.Ruta_id and t1.id=v1.id and t2.id=v2.id
+  and v1.dia=ida and v2.dia=vuelta and c1.nombre like concat('%',LOWER(salida),'%') 
+  and c2.nombre like concat('%',LOWER(destino),'%') and v1.disponibles>=cant and v2.disponibles>=cant
+  ;
+  END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `iniciarSesion` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -383,4 +418,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-25 11:44:31
+-- Dump completed on 2018-05-25 15:05:45

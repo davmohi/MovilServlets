@@ -264,7 +264,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (233,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1),(1111,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(116300616,'David','1234','Morales','davmohi@gmail.com','1996-01-22','me casa','895557664','',1);
+INSERT INTO `usuario` VALUES (233,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1),(1111,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(116300616,'David','1234','Morales','davmohi@gmail.com','1996-01-22','me casa','895557664','',1),(333333333,'555','444',NULL,'555@gmail.com',NULL,NULL,'444',NULL,1),(555555555,'555','555',NULL,'555@gmail.com',NULL,NULL,'555',NULL,1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,6 +301,25 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'aereolinea'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `iniciarSesion` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `iniciarSesion`(in mail varchar(45),in contra varchar(45))
+BEGIN
+	select * from usuario where correo=mail and contraseña=contra limit 1;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `registrarUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -333,4 +352,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-24 18:38:56
+-- Dump completed on 2018-05-24 22:35:27

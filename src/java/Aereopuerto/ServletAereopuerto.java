@@ -51,6 +51,11 @@ public class ServletAereopuerto extends HttpServlet {
                     int rol = Integer.parseInt(request.getParameter("rol"));
                     out.print(servicio.registrarUsuario(id,nombre,contra,ape,corr,naci,dir,tel,cel,rol));
                     break;
+                case "iniciarSesion":
+                    String contr= request.getParameter("contra");
+                    String cor= request.getParameter("mail");
+                    out.print(servicio.iniciarSesion(cor,contr));
+                    break;
                 default:
                     out.print("Error: No se indico la acción que se desea realizar");
                     break;

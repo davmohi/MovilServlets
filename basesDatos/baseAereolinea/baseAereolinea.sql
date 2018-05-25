@@ -315,7 +315,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarVueloIda`(in dia date,in salida varchar(45),in destino varchar(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarVueloIda`(in dia date,in salida varchar(45),in destino varchar(45),in cant int)
 BEGIN
 select v.id,r.titulo,r.descripcion,v.dia,v.salida,t.llegada,v.precio,v.oferta,v.disponibles
   from vuelo as v,ruta as r, ciudad as c1,ciudad as c2,
@@ -324,7 +324,8 @@ select v.id,r.titulo,r.descripcion,v.dia,v.salida,t.llegada,v.precio,v.oferta,v.
     group by v.id
   )t
   where c1.id=r.salida_id and c2.id=r.destino_id and r.id=v.Ruta_id and t.id=v.id
-  and v.dia=dia and c1.nombre like concat('%',LOWER(salida),'%') and c2.nombre like concat('%',LOWER(destino),'%');
+  and v.dia=dia and c1.nombre like concat('%',LOWER(salida),'%') 
+  and c2.nombre like concat('%',LOWER(destino),'%') and v.disponibles>=cant;
   END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -382,4 +383,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-25  3:01:59
+-- Dump completed on 2018-05-25 11:44:31

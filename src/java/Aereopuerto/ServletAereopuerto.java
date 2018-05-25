@@ -60,7 +60,8 @@ public class ServletAereopuerto extends HttpServlet {
                     String dia= request.getParameter("dia");
                     String salida= request.getParameter("salida");
                     String destino= request.getParameter("destino");
-                    out.print(servicio.buscarVueloIda(dia,salida,destino));
+                    int cant = Integer.parseInt(request.getParameter("cant"));
+                    out.print(servicio.buscarVueloIda(dia,salida,destino,cant));
                     break;
                 default:
                     out.print("Error: No se indico la acción que se desea realizar");

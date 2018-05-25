@@ -25,7 +25,7 @@ public class ServicioAereopuerto extends Servicio{
      
      private static final String registrarUsuario = "{call registrarUsuario(?,?,?,?,?,?,?,?,?,?)}";
      private static final String iniciarSesion = "{call iniciarSesion(?,?)}";
-     private static final String buscarVueloIda = "{call buscarVueloIda(?,?,?)}";
+     private static final String buscarVueloIda = "{call buscarVueloIda(?,?,?,?)}";
      public static JSONArray convertToJSON(ResultSet resultSet)
             throws Exception {
         JSONArray jsonArray = new JSONArray();
@@ -122,7 +122,7 @@ public class ServicioAereopuerto extends Servicio{
         }
         return js;
  }
-  public JSONArray buscarVueloIda(String dia,String salida,String destino) throws SQLException, ClassNotFoundException, Exception{
+  public JSONArray buscarVueloIda(String dia,String salida,String destino,int cant) throws SQLException, ClassNotFoundException, Exception{
         JSONArray js=new JSONArray();
         conectar();
         ResultSet rs = null;
@@ -132,6 +132,7 @@ public class ServicioAereopuerto extends Servicio{
             pstmt.setString(1,dia);
             pstmt.setString(2,salida);
             pstmt.setString(3,destino);
+            pstmt.setInt(4,cant);
             pstmt.execute();
             rs = (ResultSet)pstmt.getResultSet(); 
             js=convertToJSON(rs);

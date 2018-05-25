@@ -25,6 +25,7 @@ public class ServicioAereopuerto extends Servicio{
      
      private static final String registrarUsuario = "{call registrarUsuario(?,?,?,?,?,?,?,?,?,?)}";
      private static final String iniciarSesion = "{call iniciarSesion(?,?)}";
+     private static final String buscarVueloIda = "{call buscarVueloIda(?,?,?)}";
      public static JSONArray convertToJSON(ResultSet resultSet)
             throws Exception {
         JSONArray jsonArray = new JSONArray();
@@ -101,6 +102,36 @@ public class ServicioAereopuerto extends Servicio{
             pstmt = conexion.prepareCall(iniciarSesion); 
             pstmt.setString(1,mail);
             pstmt.setString(2,contra);
+            pstmt.execute();
+            rs = (ResultSet)pstmt.getResultSet(); 
+            js=convertToJSON(rs);
+        } catch (SQLException e) {
+            String er;
+            er=e.getMessage();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+            }
+        }
+        return js;
+ }
+  public JSONArray buscarVueloIda(String dia,String salida,String destino) throws SQLException, ClassNotFoundException, Exception{
+        JSONArray js=new JSONArray();
+        conectar();
+        ResultSet rs = null;
+        CallableStatement pstmt=null;  
+        try {            
+            pstmt = conexion.prepareCall(buscarVueloIda); 
+            pstmt.setString(1,dia);
+            pstmt.setString(2,salida);
+            pstmt.setString(3,destino);
             pstmt.execute();
             rs = (ResultSet)pstmt.getResultSet(); 
             js=convertToJSON(rs);

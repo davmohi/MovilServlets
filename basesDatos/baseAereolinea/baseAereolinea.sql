@@ -39,6 +39,7 @@ CREATE TABLE `avion` (
 
 LOCK TABLES `avion` WRITE;
 /*!40000 ALTER TABLE `avion` DISABLE KEYS */;
+INSERT INTO `avion` VALUES (1,1),(2,1),(3,1),(4,2),(5,2),(6,2),(7,3),(8,3),(9,3);
 /*!40000 ALTER TABLE `avion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,6 +179,7 @@ CREATE TABLE `rutaavion` (
 
 LOCK TABLES `rutaavion` WRITE;
 /*!40000 ALTER TABLE `rutaavion` DISABLE KEYS */;
+INSERT INTO `rutaavion` VALUES (1,1),(1,4),(2,2),(2,5),(3,3),(3,6),(4,7),(5,8),(6,9),(7,10);
 /*!40000 ALTER TABLE `rutaavion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +199,7 @@ CREATE TABLE `tipoavion` (
   `filas` varchar(45) DEFAULT NULL,
   `ascientosfila` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,6 +208,7 @@ CREATE TABLE `tipoavion` (
 
 LOCK TABLES `tipoavion` WRITE;
 /*!40000 ALTER TABLE `tipoavion` DISABLE KEYS */;
+INSERT INTO `tipoavion` VALUES (1,1995,'TAKA','JACKSON','200','5',40),(2,2000,'SUKY','MALTA','350','4',90),(3,1980,'OLD','NAVY','100','2',50);
 /*!40000 ALTER TABLE `tipoavion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +289,7 @@ CREATE TABLE `vuelo` (
   PRIMARY KEY (`id`,`Ruta_id`),
   KEY `fk_Horario_Vuelo1_idx` (`Ruta_id`),
   CONSTRAINT `fk_Horario_Vuelo1` FOREIGN KEY (`Ruta_id`) REFERENCES `ruta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,12 +298,39 @@ CREATE TABLE `vuelo` (
 
 LOCK TABLES `vuelo` WRITE;
 /*!40000 ALTER TABLE `vuelo` DISABLE KEYS */;
+INSERT INTO `vuelo` VALUES (11,'2018-06-10','10:40:00',200,1,0,100),(12,'2018-06-11','09:30:00',200,2,0,100),(13,'2018-06-12','14:00:00',350,3,1,100),(14,'2018-06-13','11:00:00',350,4,1,100),(15,'2018-06-14','08:00:00',400,5,0,100),(16,'2018-06-15','10:00:00',400,6,0,100),(17,'2018-06-16','15:00:00',320,7,1,100),(18,'2018-06-17','09:00:00',320,8,1,100),(19,'2018-06-18','18:00:00',200,9,0,100),(20,'2018-06-19','07:00:00',200,10,0,100);
 /*!40000 ALTER TABLE `vuelo` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'aereolinea'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `buscarVueloIda` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `buscarVueloIda`(in dia date,in salida varchar(45),in destino varchar(45))
+BEGIN
+select v.id,r.titulo,r.descripcion,v.dia,v.salida,t.llegada,v.precio,v.oferta,v.disponibles
+  from vuelo as v,ruta as r, ciudad as c1,ciudad as c2,
+  (
+	select v.id, SEC_TO_TIME(sum(time_to_sec(v.salida)+time_to_sec(r.duracion)))as llegada from vuelo v,ruta r where v.Ruta_id=r.id
+    group by v.id
+  )t
+  where c1.id=r.salida_id and c2.id=r.destino_id and r.id=v.Ruta_id and t.id=v.id
+  and v.dia=dia and c1.nombre like concat('%',LOWER(salida),'%') and c2.nombre like concat('%',LOWER(destino),'%');
+  END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `iniciarSesion` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -352,4 +382,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-24 22:35:27
+-- Dump completed on 2018-05-25  3:01:59

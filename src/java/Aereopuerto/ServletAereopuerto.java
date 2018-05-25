@@ -56,6 +56,12 @@ public class ServletAereopuerto extends HttpServlet {
                     String cor= request.getParameter("mail");
                     out.print(servicio.iniciarSesion(cor,contr));
                     break;
+                case "buscarVueloIda":
+                    String dia= request.getParameter("dia");
+                    String salida= request.getParameter("salida");
+                    String destino= request.getParameter("destino");
+                    out.print(servicio.buscarVueloIda(dia,salida,destino));
+                    break;
                 default:
                     out.print("Error: No se indico la acción que se desea realizar");
                     break;

@@ -29,6 +29,9 @@ public class ServicioAereopuerto extends Servicio{
      private static final String buscarVueloIdaVuelta = "{call buscarVueloIdaVuelta(?,?,?,?,?)}";
      private static final String realizarPagoIda = "{call realizarPagoIda(?,?,?,?,?,?,?)}";
      private static final String realizarPagoIdaVuelta = "{call realizarPagoIdaVuelta(?,?,?,?,?,?,?,?)}";
+     private static final String consultarAviones = "{call consultarAviones()}";
+     private static final String registrarAvion = "{call registrarAvion(?,?)}";
+     private static final String registrarHorario = "{call registrarHorario(?,?,?,?)}";
      public static JSONArray convertToJSON(ResultSet resultSet)
             throws Exception {
         JSONArray jsonArray = new JSONArray();
@@ -260,5 +263,95 @@ public class ServicioAereopuerto extends Servicio{
             }
             return js;
         }
+ }
+    public JSONArray consultarAviones() throws SQLException, ClassNotFoundException, Exception{
+        JSONArray js=new JSONArray();
+        conectar();
+        ResultSet rs = null;
+        CallableStatement pstmt=null;  
+        try {            
+            pstmt = conexion.prepareCall(consultarAviones); 
+            pstmt.execute();
+            rs = (ResultSet)pstmt.getResultSet(); 
+            js=convertToJSON(rs);
+        } catch (SQLException e) {
+            String er;
+            er=e.getMessage();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+            }
+            return js;
+        }
+        
+ }
+    public JSONArray registrarAvion(int id,int idTipo) throws SQLException, ClassNotFoundException, Exception{
+        JSONArray js=new JSONArray();
+        conectar();
+        ResultSet rs = null;
+        CallableStatement pstmt=null;  
+        try {            
+            pstmt = conexion.prepareCall(registrarAvion); 
+            pstmt.setInt(1,id);
+            pstmt.setInt(2,idTipo);
+            pstmt.execute();
+            rs = (ResultSet)pstmt.getResultSet(); 
+            js=convertToJSON(rs);
+        } catch (SQLException e) {
+            String er;
+            er=e.getMessage();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+            }
+            return js;
+        }
+        
+ }
+    public JSONArray registrarHorario(String dia,String hora,int ruta,int precio) throws SQLException, ClassNotFoundException, Exception{
+        JSONArray js=new JSONArray();
+        conectar();
+        ResultSet rs = null;
+        CallableStatement pstmt=null;  
+        try {            
+            pstmt = conexion.prepareCall(registrarHorario); 
+            pstmt.setString(1,dia);
+            pstmt.setString(2,hora);
+            pstmt.setInt(3,ruta);
+            pstmt.setInt(4,precio);
+            pstmt.execute();
+            rs = (ResultSet)pstmt.getResultSet(); 
+            js=convertToJSON(rs);
+        } catch (SQLException e) {
+            String er;
+            er=e.getMessage();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+            }
+            return js;
+        }
+        
  }
 }

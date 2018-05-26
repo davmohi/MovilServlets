@@ -92,6 +92,21 @@ public class ServletAereopuerto extends HttpServlet {
                     else if(accion.equals("realizarPagoIdaVuelta"))
                         out.print(servicio.realizarPagoIdaVuelta(idUsuario,idIda,idVuelta,asientos,numTarjeta,nombTarjeta,expiracion,seguridad));
                     break;
+                    case "consultarAviones":
+                    out.print(servicio.consultarAviones());
+                    break;
+                    case "registrarAvion":
+                    int idd = Integer.parseInt(request.getParameter("id"));
+                    int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+                    out.print(servicio.registrarAvion(idd,idTipo));
+                    break;
+                    case "registrarHorario":
+                    String diaa= request.getParameter("dia");
+                    String hora= request.getParameter("hora");
+                    int ruta = Integer.parseInt(request.getParameter("ruta"));
+                    int precio = Integer.parseInt(request.getParameter("precio"));
+                    out.print(servicio.registrarHorario(diaa,hora,ruta,precio));
+                    break;
                 default:
                     out.print("Error: No se indico la acción que se desea realizar");
                     break;
